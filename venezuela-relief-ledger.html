@@ -292,6 +292,18 @@ const data = [
     sourceName: "Al Jazeera",
     url: "https://www.aljazeera.com/news/2026/6/26/which-countries-have-pledged-aid-to-venezuela-after-powerful-earthquakes",
     note: "Multiple governments have pledged aid, medical teams, and supplies — see source for the country-by-country list as figures are confirmed."
+  },
+  {
+    donor: "Milwaukee Brewers players + Milwaukee community partners",
+    type: "Community",
+    amountUSD: null,
+    amountDisplay: "In-kind donations (amount not disclosed)",
+    date: "2026-06-29",
+    status: "in-transit",
+    recipient: "Not specified — coordinated via Forward Latino, Blessed Sacrament Catholic Church, Our Lady Queen of Peace Parish, and the Milwaukee mayor's office (@MayorMKE)",
+    sourceName: "Milwaukee Brewers (@Brewers on X)",
+    url: "https://x.com/Brewers/status/2071688809842970933?s=20",
+    note: "\"United for Venezuela\" community donation drive: Brewers players William Contreras, Jackson Chourio, and Nestor Corredor joined Forward Latino, two Milwaukee parishes, and the mayor's office. Team's post describes cars lined up for blocks to donate; no monetary total, item count, or downstream Venezuela-based recipient organization disclosed."
   }
 ];
 
@@ -338,10 +350,16 @@ const esTranslations = {
     recipient: "Varía según el país",
     amountDisplay: "No desglosado por país",
     note: "Varios gobiernos han comprometido ayuda, equipos médicos y suministros — consulte la fuente para el listado país por país a medida que se confirmen las cifras."
+  },
+  "Milwaukee Brewers players + Milwaukee community partners": {
+    donor: "Jugadores de los Brewers de Milwaukee + socios comunitarios de Milwaukee",
+    amountDisplay: "Donaciones en especie (monto no revelado)",
+    recipient: "No especificado — coordinado a través de Forward Latino, Blessed Sacrament Catholic Church, Our Lady Queen of Peace Parish, y la alcaldía de Milwaukee (@MayorMKE)",
+    note: "Jornada comunitaria de donación \"United for Venezuela\": los jugadores de los Brewers William Contreras, Jackson Chourio y Nestor Corredor se unieron a Forward Latino, dos parroquias de Milwaukee y la oficina de la alcaldía. La publicación del equipo describe filas de autos por varias cuadras para donar; no se reveló un monto total, cantidad de artículos, ni la organización receptora en Venezuela."
   }
 };
 
-const typeLabels = { es: { NGO: "ONG", Government: "Gobierno", Sports: "Deportes", Individual: "Individual" } };
+const typeLabels = { es: { NGO: "ONG", Government: "Gobierno", Sports: "Deportes", Individual: "Individual", Community: "Comunidad" } };
 
 // ---- UI chrome strings ----
 const UI = {
