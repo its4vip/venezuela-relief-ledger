@@ -1,4 +1,4 @@
-# Proof of Custody
+# Relief Pledge Registry
 
 A public accountability ledger tracking relief pledges made after the June 24,
 2026 doublet earthquake (M7.2 → M7.5) west of Caracas, Venezuela — against

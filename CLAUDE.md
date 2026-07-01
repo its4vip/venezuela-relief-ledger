@@ -1,4 +1,4 @@
-# Proof of Custody — Venezuela Earthquake Relief Ledger · Claude Code Session
+# Relief Pledge Registry — Venezuela Earthquake Relief Ledger · Claude Code Session
 
 ## Project context
 Single-file HTML tracker for public accountability of Venezuela earthquake relief
