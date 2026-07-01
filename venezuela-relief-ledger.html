@@ -36,10 +36,22 @@
 
   /* ---------- Header / seismic hero ---------- */
   header{border-bottom:1px solid var(--line);padding-bottom:20px;margin-bottom:24px;}
+  .header-top{display:flex;justify-content:space-between;align-items:center;gap:12px;}
   .eyebrow{
     font-family:var(--mono);font-size:11px;letter-spacing:.14em;
     color:var(--ink-dim);text-transform:uppercase;margin-bottom:6px;
   }
+  .lang-toggle{
+    font-family:var(--mono);font-size:11px;letter-spacing:.06em;
+    display:flex;align-items:center;gap:4px;flex-shrink:0;
+    border:1px solid var(--line);border-radius:2px;padding:2px;margin-bottom:6px;
+  }
+  .lang-toggle button{
+    background:none;border:none;color:var(--ink-dim);font-family:var(--mono);
+    font-size:11px;letter-spacing:.06em;cursor:pointer;padding:3px 7px;border-radius:2px;
+  }
+  .lang-toggle button.active{color:var(--ink);font-weight:600;background:var(--surface-2);}
+  .lang-toggle .lang-sep{color:var(--line);}
   h1{
     font-family:var(--mono);font-size:clamp(24px,5vw,34px);font-weight:700;
     letter-spacing:.01em;margin:0 0 6px;
@@ -129,10 +141,15 @@
 <div class="wrap">
 
   <header>
-    <div class="eyebrow">Aid Ledger · Not a fundraising page</div>
-    <h1>PROOF OF CUSTODY</h1>
-    <p class="sub">Venezuela, June 24 2026 — a doublet earthquake (M7.2, then M7.5 thirty-nine seconds later) struck west of Caracas. This page tracks publicly announced relief pledges against independently confirmed on-the-ground delivery, sourced line by line.</p>
-    <div class="trace-label"><span>M7.2</span><span>+39s → M7.5</span><span>strongest in the region in 100+ yrs</span></div>
+    <div class="header-top">
+      <div class="eyebrow" id="eyebrow">Aid Ledger · Not a fundraising page</div>
+      <div class="lang-toggle" id="langToggle" role="group" aria-label="Language">
+        <button type="button" data-lang="es" id="btnLangEs">ES</button><span class="lang-sep">/</span><button type="button" data-lang="en" id="btnLangEn">EN</button>
+      </div>
+    </div>
+    <h1 id="pageTitle">PROOF OF CUSTODY</h1>
+    <p class="sub" id="subCopy">Venezuela, June 24 2026 — a doublet earthquake (M7.2, then M7.5 thirty-nine seconds later) struck west of Caracas. This page tracks publicly announced relief pledges against independently confirmed on-the-ground delivery, sourced line by line.</p>
+    <div class="trace-label"><span id="traceM72">M7.2</span><span id="traceGap">+39s → M7.5</span><span id="traceStrongest">strongest in the region in 100+ yrs</span></div>
     <svg class="trace" viewBox="0 0 400 60" preserveAspectRatio="none">
       <polyline points="0,30 20,29 40,31 60,30 80,28 100,32 120,30 130,30 135,6 140,54 145,10 150,46 155,18 160,35 165,30 180,29 200,31 220,30 240,30 260,29 280,31 300,30 320,30 340,30 360,30 380,30 400,30"
         fill="none" stroke="#B5493D" stroke-width="1.5"/>
@@ -144,24 +161,24 @@
   <div class="controls">
     <input type="text" id="search" placeholder="search donor, recipient, note…">
     <select id="typeFilter">
-      <option value="">all types</option>
+      <option value="" id="typeAllOption">all types</option>
     </select>
     <select id="statusFilter">
-      <option value="">all statuses</option>
-      <option value="pledged">announced / pledged</option>
-      <option value="in-transit">operational / in transit</option>
-      <option value="confirmed">confirmed delivered</option>
+      <option value="" id="statusAllOption">all statuses</option>
+      <option value="pledged" id="statusPledgedOption">announced / pledged</option>
+      <option value="in-transit" id="statusTransitOption">operational / in transit</option>
+      <option value="confirmed" id="statusConfirmedOption">confirmed delivered</option>
     </select>
   </div>
 
   <div id="ledger"><!-- filled by JS --></div>
 
   <footer>
-    <h2>Methodology</h2>
-    <p>Entries are added manually from primary sources (official statements, wire coverage, org press releases) — not scraped or auto-generated, to avoid amplifying rumors. Each entry shows three custody stages: <strong>announced</strong> (a public pledge exists), <strong>operational</strong> (an organization is confirmed active on the ground or funds are moving), and <strong>confirmed delivered</strong> (independent reporting or audited data shows the aid reached affected people). Most pledges made in the first week sit at stage one or two — that gap is the point of this ledger, not a flaw in it.</p>
-    <h2>Before giving directly</h2>
-    <p>Cross-check any organization against a charity evaluator such as BBB's Give.org, Charity Navigator, or GiveWell before donating, and be wary of unsolicited social-media or messaging-app requests — scam activity typically rises after major disasters.</p>
-    <div class="updated">Ledger last reviewed: June 30, 2026 · 9 entries · maintained manually, corrections welcome</div>
+    <h2 id="methodologyHeading">Methodology</h2>
+    <p id="methodologyCopy">Entries are added manually from primary sources (official statements, wire coverage, org press releases) — not scraped or auto-generated, to avoid amplifying rumors. Each entry shows three custody stages: announced (a public pledge exists), operational (an organization is confirmed active on the ground or funds are moving), and confirmed delivered (independent reporting or audited data shows the aid reached affected people). Most pledges made in the first week sit at stage one or two — that gap is the point of this ledger, not a flaw in it.</p>
+    <h2 id="beforeGivingHeading">Before giving directly</h2>
+    <p id="beforeGivingCopy">Cross-check any organization against a charity evaluator such as BBB's Give.org, Charity Navigator, or GiveWell before donating, and be wary of unsolicited social-media or messaging-app requests — scam activity typically rises after major disasters.</p>
+    <div class="updated" id="updatedLine">Ledger last reviewed: June 30, 2026 · 9 entries · maintained manually, corrections welcome</div>
   </footer>
 
 </div>
@@ -278,6 +295,135 @@ const data = [
   }
 ];
 
+// ---- es-VE translations (parallel to data[], keyed by donor — data[] itself is never edited) ----
+const esTranslations = {
+  "Global Empowerment Mission + I Love Venezuela": {
+    recipient: "Distribución directa a través de la red de GEM y socios locales",
+    note: "Compromiso inicial, respaldado en parte por aportes del sector privado y donantes internacionales. Aún no hay confirmación independiente de cuánto se ha desembolsado realmente."
+  },
+  "U.S. Department of State": {
+    recipient: "Alianza de entrega con GEM y Walmart",
+    amountDisplay: "No desglosado (logística + alivio de sanciones)",
+    note: "La Licencia General 60 de la OFAC (vence el 23 de octubre de 2026) autoriza transacciones de ayuda humanitaria pese a las sanciones vigentes — esto habilita el flujo de ayuda, mas no representa en sí un compromiso en efectivo."
+  },
+  "MLB + MLBPA": {
+    recipient: "Cruz Roja Americana / red de socios de la IFRC",
+    note: "Donación conjunta que cita los profundos lazos de Venezuela con el béisbol (más de 60 jugadores de las Grandes Ligas nacidos allí)."
+  },
+  "Real Madrid C.F.": {
+    recipient: "No especificado en el comunicado del club",
+    note: "Donación a nivel de club, independiente de la donación personal de su presidente (ver abajo)."
+  },
+  "Florentino Pérez (Real Madrid president)": {
+    recipient: "No especificado",
+    note: "Donación personal anunciada junto con la del club."
+  },
+  "UNICEF": {
+    recipient: "Programas de salud, nutrición, agua/saneamiento (WASH) y protección infantil",
+    amountDisplay: "$3.5M movilizados / llamamiento de $52M",
+    note: "$3.5M liberados de los fondos de emergencia propios de UNICEF para despliegue inmediato; por separado, se solicitan $52M en nuevo financiamiento de donantes que aún no se ha recibido."
+  },
+  "International Rescue Committee": {
+    recipient: "Salud, nutrición, agua/saneamiento (WASH) — el IRC opera en Venezuela desde 2021",
+    amountDisplay: "No revelado",
+    note: "Ampliación de operaciones existentes; no se ha publicado un monto de compromiso específico."
+  },
+  "Samaritan's Purse": {
+    recipient: "Hospital de campaña de emergencia, La Guaira",
+    amountDisplay: "En especie (~100,000 lb transportadas por vía aérea + hospital de campaña)",
+    note: "Suministros de ayuda en especie y una unidad médica móvil; no se reveló una cifra en efectivo."
+  },
+  "Foreign governments (multiple)": {
+    donor: "Gobiernos extranjeros (varios)",
+    recipient: "Varía según el país",
+    amountDisplay: "No desglosado por país",
+    note: "Varios gobiernos han comprometido ayuda, equipos médicos y suministros — consulte la fuente para el listado país por país a medida que se confirmen las cifras."
+  }
+};
+
+const typeLabels = { es: { NGO: "ONG", Government: "Gobierno", Sports: "Deportes", Individual: "Individual" } };
+
+// ---- UI chrome strings ----
+const UI = {
+  en: {
+    htmlLang: "en",
+    docTitle: "Aid Ledger — Venezuela Earthquake Relief",
+    eyebrow: "Aid Ledger · Not a fundraising page",
+    title: "PROOF OF CUSTODY",
+    sub: "Venezuela, June 24 2026 — a doublet earthquake (M7.2, then M7.5 thirty-nine seconds later) struck west of Caracas. This page tracks publicly announced relief pledges against independently confirmed on-the-ground delivery, sourced line by line.",
+    traceM72: "M7.2",
+    traceGap: "+39s → M7.5",
+    traceStrongest: "strongest in the region in 100+ yrs",
+    searchPlaceholder: "search donor, recipient, note…",
+    typeAll: "all types",
+    statusAll: "all statuses",
+    statusPledged: "announced / pledged",
+    statusTransit: "operational / in transit",
+    statusConfirmed: "confirmed delivered",
+    statAnnounced: "Announced (itemized cash)",
+    statEntries: "Entries tracked",
+    statConfirmed: "Confirmed delivered",
+    statSince: "Since the quake",
+    dayPrefix: "Day",
+    metaTo: "to:",
+    sourcePrefix: "source:",
+    noMatches: "No entries match those filters.",
+    methodologyHeading: "Methodology",
+    methodologyCopy: "Entries are added manually from primary sources (official statements, wire coverage, org press releases) — not scraped or auto-generated, to avoid amplifying rumors. Each entry shows three custody stages: <strong>announced</strong> (a public pledge exists), <strong>operational</strong> (an organization is confirmed active on the ground or funds are moving), and <strong>confirmed delivered</strong> (independent reporting or audited data shows the aid reached affected people). Most pledges made in the first week sit at stage one or two — that gap is the point of this ledger, not a flaw in it.",
+    beforeGivingHeading: "Before giving directly",
+    beforeGivingCopy: "Cross-check any organization against a charity evaluator such as BBB's Give.org, Charity Navigator, or GiveWell before donating, and be wary of unsolicited social-media or messaging-app requests — scam activity typically rises after major disasters.",
+    updatedLine: n => `Ledger last reviewed: June 30, 2026 · ${n} entries · maintained manually, corrections welcome`
+  },
+  es: {
+    htmlLang: "es-VE",
+    docTitle: "Registro de Ayuda — Terremoto en Venezuela",
+    eyebrow: "Registro de ayuda · No es una página de recaudación de fondos",
+    title: "PRUEBA DE CUSTODIA",
+    sub: "Venezuela, 24 de junio de 2026 — un sismo doble (M7.2, seguido de un M7.5 treinta y nueve segundos después) golpeó al oeste de Caracas. Esta página rastrea las promesas de ayuda anunciadas públicamente frente a la entrega confirmada de forma independiente sobre el terreno, con fuente línea por línea.",
+    traceM72: "M7.2",
+    traceGap: "+39s → M7.5",
+    traceStrongest: "el más fuerte en la región en más de 100 años",
+    searchPlaceholder: "buscar donante, destinatario, nota…",
+    typeAll: "todos los tipos",
+    statusAll: "todos los estados",
+    statusPledged: "anunciado / prometido",
+    statusTransit: "operativo / en tránsito",
+    statusConfirmed: "entrega confirmada",
+    statAnnounced: "Anunciado (efectivo desglosado)",
+    statEntries: "Registros rastreados",
+    statConfirmed: "Entrega confirmada",
+    statSince: "Desde el sismo",
+    dayPrefix: "Día",
+    metaTo: "para:",
+    sourcePrefix: "fuente:",
+    noMatches: "Ningún registro coincide con esos filtros.",
+    methodologyHeading: "Metodología",
+    methodologyCopy: "Los registros se agregan manualmente a partir de fuentes primarias (comunicados oficiales, cobertura de agencias de noticias, notas de prensa de organizaciones) — no se extraen automáticamente ni se generan por scraping, para evitar amplificar rumores. Cada registro muestra tres etapas de custodia: <strong>anunciado</strong> (existe una promesa pública), <strong>operativo</strong> (se confirma que una organización está activa sobre el terreno o que los fondos se están movilizando), y <strong>entrega confirmada</strong> (reportes independientes o datos auditados muestran que la ayuda llegó a las personas afectadas). La mayoría de las promesas hechas en la primera semana se ubican en la etapa uno o dos — esa brecha es el punto de este registro, no una falla en él.",
+    beforeGivingHeading: "Antes de donar directamente",
+    beforeGivingCopy: "Verifique cualquier organización con un evaluador de caridad como BBB's Give.org, Charity Navigator o GiveWell antes de donar, y desconfíe de solicitudes no solicitadas por redes sociales o apps de mensajería — la actividad de estafas suele aumentar tras grandes desastres.",
+    updatedLine: n => `Registro revisado por última vez: 30 de junio de 2026 · ${n} registros · mantenido manualmente, correcciones bienvenidas`
+  }
+};
+
+let lang = localStorage.getItem('pocLang') === 'en' ? 'en' : 'es';
+
+function tf(entry, field){
+  if(lang==='es'){
+    const tr = esTranslations[entry.donor];
+    if(tr && tr[field] !== undefined) return tr[field];
+  }
+  return entry[field];
+}
+
+function typeLabel(type){
+  return lang==='es' ? (typeLabels.es[type] || type) : type;
+}
+
+function statusLabel(status){
+  const s = UI[lang];
+  return status==='confirmed' ? s.statusConfirmed : status==='in-transit' ? s.statusTransit : s.statusPledged;
+}
+
 // ---- render stats ----
 function fmtUSD(n){
   if(n>=1000000) return '$'+(n/1000000).toFixed(1).replace(/\.0$/,'')+'M';
@@ -288,33 +434,68 @@ const totalUSD = data.reduce((s,d)=>s+(d.amountUSD||0),0);
 const confirmedCount = data.filter(d=>d.status==='confirmed').length;
 const daysSince = Math.round((new Date('2026-06-30') - new Date('2026-06-24'))/86400000);
 
-document.getElementById('stats').innerHTML = `
-  <div class="stat"><div class="n">${fmtUSD(totalUSD)}</div><div class="l">Announced (itemized cash)</div></div>
-  <div class="stat"><div class="n">${data.length}</div><div class="l">Entries tracked</div></div>
-  <div class="stat ${confirmedCount===0?'zero':''}"><div class="n">${confirmedCount} / ${data.length}</div><div class="l">Confirmed delivered</div></div>
-  <div class="stat"><div class="n">Day ${daysSince}</div><div class="l">Since the quake</div></div>
-`;
+function renderStats(){
+  const s = UI[lang];
+  document.getElementById('stats').innerHTML = `
+    <div class="stat"><div class="n">${fmtUSD(totalUSD)}</div><div class="l">${s.statAnnounced}</div></div>
+    <div class="stat"><div class="n">${data.length}</div><div class="l">${s.statEntries}</div></div>
+    <div class="stat ${confirmedCount===0?'zero':''}"><div class="n">${confirmedCount} / ${data.length}</div><div class="l">${s.statConfirmed}</div></div>
+    <div class="stat"><div class="n">${s.dayPrefix} ${daysSince}</div><div class="l">${s.statSince}</div></div>
+  `;
+}
 
 // ---- populate type filter ----
 const types = [...new Set(data.map(d=>d.type))].sort();
 const typeSelect = document.getElementById('typeFilter');
-types.forEach(t=>{
-  const o = document.createElement('option');
-  o.value = t; o.textContent = t.toLowerCase();
-  typeSelect.appendChild(o);
-});
+function populateTypeFilter(){
+  const current = typeSelect.value;
+  [...typeSelect.querySelectorAll('option')].forEach(o=>{ if(o.id!=='typeAllOption') o.remove(); });
+  types.forEach(t=>{
+    const o = document.createElement('option');
+    o.value = t; o.textContent = typeLabel(t).toLowerCase();
+    typeSelect.appendChild(o);
+  });
+  typeSelect.value = current;
+}
+
+// ---- static chrome text (header, footer, filter labels) ----
+function applyStaticStrings(){
+  const s = UI[lang];
+  document.documentElement.lang = s.htmlLang;
+  document.title = s.docTitle;
+  document.getElementById('eyebrow').textContent = s.eyebrow;
+  document.getElementById('pageTitle').textContent = s.title;
+  document.getElementById('subCopy').textContent = s.sub;
+  document.getElementById('traceM72').textContent = s.traceM72;
+  document.getElementById('traceGap').textContent = s.traceGap;
+  document.getElementById('traceStrongest').textContent = s.traceStrongest;
+  document.getElementById('search').placeholder = s.searchPlaceholder;
+  document.getElementById('typeAllOption').textContent = s.typeAll;
+  document.getElementById('statusAllOption').textContent = s.statusAll;
+  document.getElementById('statusPledgedOption').textContent = s.statusPledged;
+  document.getElementById('statusTransitOption').textContent = s.statusTransit;
+  document.getElementById('statusConfirmedOption').textContent = s.statusConfirmed;
+  document.getElementById('methodologyHeading').textContent = s.methodologyHeading;
+  document.getElementById('methodologyCopy').innerHTML = s.methodologyCopy;
+  document.getElementById('beforeGivingHeading').textContent = s.beforeGivingHeading;
+  document.getElementById('beforeGivingCopy').textContent = s.beforeGivingCopy;
+  document.getElementById('updatedLine').textContent = s.updatedLine(data.length);
+  document.getElementById('btnLangEs').classList.toggle('active', lang==='es');
+  document.getElementById('btnLangEn').classList.toggle('active', lang==='en');
+}
 
 function stepIndex(status){
   return status === 'confirmed' ? 2 : status === 'in-transit' ? 1 : 0;
 }
 
 function renderLedger(){
+  const s = UI[lang];
   const q = document.getElementById('search').value.toLowerCase();
   const typeF = typeSelect.value;
   const statusF = document.getElementById('statusFilter').value;
 
   const filtered = data.filter(d=>{
-    const text = (d.donor+' '+d.recipient+' '+d.note).toLowerCase();
+    const text = (tf(d,'donor')+' '+tf(d,'recipient')+' '+tf(d,'note')).toLowerCase();
     return (!q || text.includes(q)) && (!typeF || d.type===typeF) && (!statusF || d.status===statusF);
   });
 
@@ -327,22 +508,38 @@ function renderLedger(){
     return `
     <div class="row" data-status="${d.status}">
       <div class="row-top">
-        <div><span class="donor">${d.donor}</span><span class="type-tag">${d.type}</span></div>
-        <div class="amount">${d.amountDisplay}</div>
+        <div><span class="donor">${tf(d,'donor')}</span><span class="type-tag">${typeLabel(d.type)}</span></div>
+        <div class="amount">${tf(d,'amountDisplay')}</div>
       </div>
-      <div class="meta">${d.date} · to: ${d.recipient}</div>
-      <div class="note">${d.note}</div>
-      <div class="stepper">${dots}<span style="margin-left:8px;">${d.status==='confirmed'?'confirmed delivered':d.status==='in-transit'?'operational / in transit':'announced'}</span></div>
+      <div class="meta">${d.date} · ${s.metaTo} ${tf(d,'recipient')}</div>
+      <div class="note">${tf(d,'note')}</div>
+      <div class="stepper">${dots}<span style="margin-left:8px;">${statusLabel(d.status)}</span></div>
       <div class="row-bottom">
-        <a class="source-link" href="${d.url}" target="_blank" rel="noopener">source: ${d.sourceName} ↗</a>
+        <a class="source-link" href="${d.url}" target="_blank" rel="noopener">${s.sourcePrefix} ${d.sourceName} ↗</a>
       </div>
     </div>`;
-  }).join('') || '<p style="color:var(--ink-dim);font-family:var(--mono);font-size:13px;">No entries match those filters.</p>';
+  }).join('') || `<p style="color:var(--ink-dim);font-family:var(--mono);font-size:13px;">${s.noMatches}</p>`;
 }
+
+function setLang(newLang){
+  lang = newLang;
+  localStorage.setItem('pocLang', lang);
+  applyStaticStrings();
+  populateTypeFilter();
+  renderStats();
+  renderLedger();
+}
+
+document.getElementById('btnLangEs').addEventListener('click', ()=>setLang('es'));
+document.getElementById('btnLangEn').addEventListener('click', ()=>setLang('en'));
 
 document.getElementById('search').addEventListener('input', renderLedger);
 typeSelect.addEventListener('change', renderLedger);
 document.getElementById('statusFilter').addEventListener('change', renderLedger);
+
+applyStaticStrings();
+populateTypeFilter();
+renderStats();
 renderLedger();
 </script>
 
