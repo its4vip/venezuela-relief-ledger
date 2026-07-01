@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aid Ledger — Venezuela Earthquake Relief</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+
+  :root{
+    --bg:#14181F;
+    --surface:#1E232B;
+    --surface-2:#262C36;
+    --ink:#E7E3D8;
+    --ink-dim:#9BA3AE;
+    --line:rgba(231,227,216,0.12);
+    --pledged:#D98E3F;
+    --transit:#6E8FB0;
+    --confirmed:#4FA88F;
+    --critical:#B5493D;
+    --mono: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    --sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;}
+  .wrap{max-width:880px;margin:0 auto;padding:32px 20px 80px;}
+
+  /* ---------- Header / seismic hero ---------- */
+  header{border-bottom:1px solid var(--line);padding-bottom:20px;margin-bottom:24px;}
+  .eyebrow{
+    font-family:var(--mono);font-size:11px;letter-spacing:.14em;
+    color:var(--ink-dim);text-transform:uppercase;margin-bottom:6px;
+  }
+  h1{
+    font-family:var(--mono);font-size:clamp(24px,5vw,34px);font-weight:700;
+    letter-spacing:.01em;margin:0 0 6px;
+  }
+  .sub{color:var(--ink-dim);font-size:14.5px;max-width:58ch;}
+
+  .trace{width:100%;height:56px;margin:18px 0 6px;display:block;}
+  .trace-label{
+    font-family:var(--mono);font-size:11px;color:var(--critical);
+    display:flex;justify-content:space-between;margin-bottom:2px;
+  }
+
+  /* ---------- Stat readout ---------- */
+  .stats{
+    display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+    background:var(--line);border:1px solid var(--line);
+    margin:20px 0 28px;border-radius:2px;overflow:hidden;
+  }
+  .stat{background:var(--surface);padding:14px 12px;}
+  .stat .n{font-family:var(--mono);font-weight:700;font-size:clamp(16px,3vw,22px);}
+  .stat .l{font-family:var(--mono);font-size:10px;color:var(--ink-dim);letter-spacing:.06em;text-transform:uppercase;margin-top:4px;}
+  .stat.zero .n{color:var(--critical);}
+  @media (max-width:560px){ .stats{grid-template-columns:repeat(2,1fr);} }
+
+  /* ---------- Filters ---------- */
+  .controls{
+    display:flex;gap:10px;flex-wrap:wrap;align-items:center;
+    margin-bottom:18px;font-family:var(--mono);font-size:12.5px;
+  }
+  .controls input[type="text"]{
+    background:var(--surface);border:1px solid var(--line);color:var(--ink);
+    font-family:var(--mono);font-size:12.5px;padding:8px 10px;border-radius:2px;
+    flex:1;min-width:160px;
+  }
+  .controls select{
+    background:var(--surface);border:1px solid var(--line);color:var(--ink);
+    font-family:var(--mono);font-size:12.5px;padding:8px 10px;border-radius:2px;
+  }
+  .controls input:focus,.controls select:focus,button:focus,a:focus{
+    outline:2px solid var(--transit);outline-offset:2px;
+  }
+
+  /* ---------- Ledger rows ---------- */
+  .row{
+    background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--pledged);
+    border-radius:2px;padding:14px 16px;margin-bottom:10px;
+  }
+  .row[data-status="in-transit"]{border-left-color:var(--transit);}
+  .row[data-status="confirmed"]{border-left-color:var(--confirmed);}
+
+  .row-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline;}
+  .donor{font-weight:600;font-size:15px;}
+  .type-tag{
+    font-family:var(--mono);font-size:10px;color:var(--ink-dim);
+    border:1px solid var(--line);padding:2px 6px;border-radius:2px;margin-left:8px;
+    vertical-align:middle;letter-spacing:.04em;
+  }
+  .amount{font-family:var(--mono);font-weight:600;font-size:14px;white-space:nowrap;}
+
+  .meta{font-size:12.5px;color:var(--ink-dim);margin-top:6px;}
+  .note{font-size:13px;color:var(--ink-dim);margin-top:8px;}
+
+  /* custody stepper */
+  .stepper{display:flex;align-items:center;gap:6px;margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--ink-dim);}
+  .dot{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--ink-dim);flex-shrink:0;}
+  .dot.on{background:var(--pledged);border-color:var(--pledged);}
+  .dot.on.t1{background:var(--transit);border-color:var(--transit);}
+  .dot.on.t2{background:var(--confirmed);border-color:var(--confirmed);}
+  .seg{width:22px;height:1px;background:var(--line);}
+
+  .source-link{
+    font-family:var(--mono);font-size:11px;color:var(--transit);
+    text-decoration:none;border-bottom:1px dotted var(--transit);
+  }
+  .row-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:10px;flex-wrap:wrap;gap:8px;}
+
+  /* ---------- Footer ---------- */
+  footer{margin-top:36px;padding-top:20px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-dim);}
+  footer h2{font-family:var(--mono);font-size:12px;color:var(--ink);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;}
+  footer p{max-width:64ch;margin:0 0 12px;}
+  .updated{font-family:var(--mono);font-size:11px;color:var(--ink-dim);margin-top:24px;}
+
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">Aid Ledger · Not a fundraising page</div>
+    <h1>PROOF OF CUSTODY</h1>
+    <p class="sub">Venezuela, June 24 2026 — a doublet earthquake (M7.2, then M7.5 thirty-nine seconds later) struck west of Caracas. This page tracks publicly announced relief pledges against independently confirmed on-the-ground delivery, sourced line by line.</p>
+    <div class="trace-label"><span>M7.2</span><span>+39s → M7.5</span><span>strongest in the region in 100+ yrs</span></div>
+    <svg class="trace" viewBox="0 0 400 60" preserveAspectRatio="none">
+      <polyline points="0,30 20,29 40,31 60,30 80,28 100,32 120,30 130,30 135,6 140,54 145,10 150,46 155,18 160,35 165,30 180,29 200,31 220,30 240,30 260,29 280,31 300,30 320,30 340,30 360,30 380,30 400,30"
+        fill="none" stroke="#B5493D" stroke-width="1.5"/>
+    </svg>
+  </header>
+
+  <div class="stats" id="stats"><!-- filled by JS --></div>
+
+  <div class="controls">
+    <input type="text" id="search" placeholder="search donor, recipient, note…">
+    <select id="typeFilter">
+      <option value="">all types</option>
+    </select>
+    <select id="statusFilter">
+      <option value="">all statuses</option>
+      <option value="pledged">announced / pledged</option>
+      <option value="in-transit">operational / in transit</option>
+      <option value="confirmed">confirmed delivered</option>
+    </select>
+  </div>
+
+  <div id="ledger"><!-- filled by JS --></div>
+
+  <footer>
+    <h2>Methodology</h2>
+    <p>Entries are added manually from primary sources (official statements, wire coverage, org press releases) — not scraped or auto-generated, to avoid amplifying rumors. Each entry shows three custody stages: <strong>announced</strong> (a public pledge exists), <strong>operational</strong> (an organization is confirmed active on the ground or funds are moving), and <strong>confirmed delivered</strong> (independent reporting or audited data shows the aid reached affected people). Most pledges made in the first week sit at stage one or two — that gap is the point of this ledger, not a flaw in it.</p>
+    <h2>Before giving directly</h2>
+    <p>Cross-check any organization against a charity evaluator such as BBB's Give.org, Charity Navigator, or GiveWell before donating, and be wary of unsolicited social-media or messaging-app requests — scam activity typically rises after major disasters.</p>
+    <div class="updated">Ledger last reviewed: June 30, 2026 · 9 entries · maintained manually, corrections welcome</div>
+  </footer>
+
+</div>
+
+<script>
+const data = [
+  {
+    donor: "Global Empowerment Mission + I Love Venezuela",
+    type: "NGO",
+    amountUSD: 35000000,
+    amountDisplay: "$35M",
+    date: "2026-06-26",
+    status: "pledged",
+    recipient: "Direct distribution via GEM network + local partners",
+    sourceName: "Global Empowerment Mission",
+    url: "https://www.globalempowermentmission.org/mission/venezuela-earthquakes/",
+    note: "Initial commitment, backed partly by private-sector and international donor contributions. No independent confirmation yet of how much has actually been disbursed."
+  },
+  {
+    donor: "U.S. Department of State",
+    type: "Government",
+    amountUSD: null,
+    amountDisplay: "Not itemized (logistics + sanctions relief)",
+    date: "2026-06-25",
+    status: "in-transit",
+    recipient: "Delivery partnership with GEM and Walmart",
+    sourceName: "U.S. Department of State",
+    url: "https://www.state.gov/responding-to-venezuela-earthquakes",
+    note: "OFAC General License 60 (expires Oct 23, 2026) authorizes earthquake-relief transactions despite existing sanctions — this enables aid flow rather than representing a cash pledge itself."
+  },
+  {
+    donor: "MLB + MLBPA",
+    type: "Sports",
+    amountUSD: 1000000,
+    amountDisplay: "$1M",
+    date: "2026-06-30",
+    status: "pledged",
+    recipient: "American Red Cross / IFRC partner network",
+    sourceName: "ESPN / MLB.com",
+    url: "https://www.espn.com/mlb/story/_/id/49228884/mlb-mlbpa-donate-1-million-venezuela-earthquake-relief-efforts",
+    note: "Joint donation citing Venezuela's deep ties to baseball (60+ MLB players born there)."
+  },
+  {
+    donor: "Real Madrid C.F.",
+    type: "Sports",
+    amountUSD: 1100000,
+    amountDisplay: "€1M (~$1.1M)",
+    date: "2026-06-29",
+    status: "pledged",
+    recipient: "Not specified in club statement",
+    sourceName: "ESPN",
+    url: "https://www.espn.com/soccer/story/_/id/49217312/real-madrid-give-1m-venezuela-earthquake-victims",
+    note: "Club-level donation, separate from the president's personal gift below."
+  },
+  {
+    donor: "Florentino Pérez (Real Madrid president)",
+    type: "Individual",
+    amountUSD: 1100000,
+    amountDisplay: "€1M (~$1.1M)",
+    date: "2026-06-29",
+    status: "pledged",
+    recipient: "Not specified",
+    sourceName: "ESPN",
+    url: "https://www.espn.com/soccer/story/_/id/49217312/real-madrid-give-1m-venezuela-earthquake-victims",
+    note: "Personal donation announced alongside the club's."
+  },
+  {
+    donor: "UNICEF",
+    type: "NGO",
+    amountUSD: 3500000,
+    amountDisplay: "$3.5M mobilized / $52M appeal",
+    date: "2026-06-27",
+    status: "in-transit",
+    recipient: "Health, nutrition, WASH, child protection programs",
+    sourceName: "UNICEF USA",
+    url: "https://www.unicefusa.org/stories/venezuela-earthquakes-children-need-help-now",
+    note: "$3.5M released from UNICEF's own emergency funds for immediate deployment; separately appealing for $52M in new donor funding it does not yet have."
+  },
+  {
+    donor: "International Rescue Committee",
+    type: "NGO",
+    amountUSD: null,
+    amountDisplay: "Undisclosed",
+    date: "2026-06-26",
+    status: "in-transit",
+    recipient: "Health, nutrition, WASH — IRC has operated in Venezuela since 2021",
+    sourceName: "The IRC",
+    url: "https://www.rescue.org/article/how-help-survivors-earthquakes-venezuela",
+    note: "Scaling up existing operations; no specific pledge amount published."
+  },
+  {
+    donor: "Samaritan's Purse",
+    type: "NGO",
+    amountUSD: null,
+    amountDisplay: "In-kind (~100,000 lb airlift + field hospital)",
+    date: "2026-06-27",
+    status: "in-transit",
+    recipient: "Emergency Field Hospital, La Guaira",
+    sourceName: "Samaritan's Purse",
+    url: "https://www.samaritanspurse.org/article/samaritans-purse-responding-to-venezuela-quakes/",
+    note: "In-kind relief supplies and a mobile medical unit; no cash figure disclosed."
+  },
+  {
+    donor: "Foreign governments (multiple)",
+    type: "Government",
+    amountUSD: null,
+    amountDisplay: "Not itemized by country",
+    date: "2026-06-26",
+    status: "pledged",
+    recipient: "Varies by country",
+    sourceName: "Al Jazeera",
+    url: "https://www.aljazeera.com/news/2026/6/26/which-countries-have-pledged-aid-to-venezuela-after-powerful-earthquakes",
+    note: "Multiple governments have pledged aid, medical teams, and supplies — see source for the country-by-country list as figures are confirmed."
+  }
+];
+
+// ---- render stats ----
+function fmtUSD(n){
+  if(n>=1000000) return '$'+(n/1000000).toFixed(1).replace(/\.0$/,'')+'M';
+  if(n>=1000) return '$'+(n/1000).toFixed(0)+'K';
+  return '$'+n;
+}
+const totalUSD = data.reduce((s,d)=>s+(d.amountUSD||0),0);
+const confirmedCount = data.filter(d=>d.status==='confirmed').length;
+const daysSince = Math.round((new Date('2026-06-30') - new Date('2026-06-24'))/86400000);
+
+document.getElementById('stats').innerHTML = `
+  <div class="stat"><div class="n">${fmtUSD(totalUSD)}</div><div class="l">Announced (itemized cash)</div></div>
+  <div class="stat"><div class="n">${data.length}</div><div class="l">Entries tracked</div></div>
+  <div class="stat ${confirmedCount===0?'zero':''}"><div class="n">${confirmedCount} / ${data.length}</div><div class="l">Confirmed delivered</div></div>
+  <div class="stat"><div class="n">Day ${daysSince}</div><div class="l">Since the quake</div></div>
+`;
+
+// ---- populate type filter ----
+const types = [...new Set(data.map(d=>d.type))].sort();
+const typeSelect = document.getElementById('typeFilter');
+types.forEach(t=>{
+  const o = document.createElement('option');
+  o.value = t; o.textContent = t.toLowerCase();
+  typeSelect.appendChild(o);
+});
+
+function stepIndex(status){
+  return status === 'confirmed' ? 2 : status === 'in-transit' ? 1 : 0;
+}
+
+function renderLedger(){
+  const q = document.getElementById('search').value.toLowerCase();
+  const typeF = typeSelect.value;
+  const statusF = document.getElementById('statusFilter').value;
+
+  const filtered = data.filter(d=>{
+    const text = (d.donor+' '+d.recipient+' '+d.note).toLowerCase();
+    return (!q || text.includes(q)) && (!typeF || d.type===typeF) && (!statusF || d.status===statusF);
+  });
+
+  document.getElementById('ledger').innerHTML = filtered.map(d=>{
+    const step = stepIndex(d.status);
+    const dots = [0,1,2].map(i=>{
+      const cls = i<=step ? `dot on ${i===1?'t1':i===2?'t2':''}` : 'dot';
+      return `<div class="${cls}"></div>` + (i<2 ? '<div class="seg"></div>' : '');
+    }).join('');
+    return `
+    <div class="row" data-status="${d.status}">
+      <div class="row-top">
+        <div><span class="donor">${d.donor}</span><span class="type-tag">${d.type}</span></div>
+        <div class="amount">${d.amountDisplay}</div>
+      </div>
+      <div class="meta">${d.date} · to: ${d.recipient}</div>
+      <div class="note">${d.note}</div>
+      <div class="stepper">${dots}<span style="margin-left:8px;">${d.status==='confirmed'?'confirmed delivered':d.status==='in-transit'?'operational / in transit':'announced'}</span></div>
+      <div class="row-bottom">
+        <a class="source-link" href="${d.url}" target="_blank" rel="noopener">source: ${d.sourceName} ↗</a>
+      </div>
+    </div>`;
+  }).join('') || '<p style="color:var(--ink-dim);font-family:var(--mono);font-size:13px;">No entries match those filters.</p>';
+}
+
+document.getElementById('search').addEventListener('input', renderLedger);
+typeSelect.addEventListener('change', renderLedger);
+document.getElementById('statusFilter').addEventListener('change', renderLedger);
+renderLedger();
+</script>
+
+</body>
+</html>
