@@ -76,6 +76,16 @@
   .stat.zero .n{color:var(--critical);}
   @media (max-width:560px){ .stats{grid-template-columns:repeat(2,1fr);} }
 
+  /* ---------- Split layout: pledges + rescue tribute, side by side ---------- */
+  .split-grid{display:grid;grid-template-columns:3fr 2fr;gap:32px;align-items:start;}
+  .split-grid > *{min-width:0;}
+  .col-heading{font-family:var(--mono);font-size:12px;color:var(--ink);letter-spacing:.06em;text-transform:uppercase;margin:0 0 14px;}
+  .rescue-col{border-left:1px solid var(--line);padding-left:28px;}
+  @media (max-width:760px){
+    .split-grid{grid-template-columns:1fr;gap:0;}
+    .rescue-col{border-left:none;padding-left:0;border-top:1px solid var(--line);padding-top:20px;margin-top:28px;}
+  }
+
   /* ---------- Filters ---------- */
   .controls{
     display:flex;gap:10px;flex-wrap:wrap;align-items:center;
@@ -129,8 +139,6 @@
   .row-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:10px;flex-wrap:wrap;gap:8px;}
 
   /* ---------- Rescue teams tribute ---------- */
-  .rescue-section{border-top:1px solid var(--line);padding-top:20px;margin-top:28px;}
-  .rescue-section h2{font-family:var(--mono);font-size:12px;color:var(--ink);letter-spacing:.06em;text-transform:uppercase;margin:0 0 8px;}
   .rescue-intro{font-size:13.5px;color:var(--ink-dim);max-width:64ch;margin:0 0 16px;}
   .rescue-row{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--confirmed);border-radius:2px;padding:12px 16px;margin-bottom:8px;}
   .rescue-row .rescue-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:baseline;}
@@ -168,26 +176,31 @@
 
   <div class="stats" id="stats"><!-- filled by JS --></div>
 
-  <div class="controls">
-    <input type="text" id="search" placeholder="search donor, recipient, note…">
-    <select id="typeFilter">
-      <option value="" id="typeAllOption">all types</option>
-    </select>
-    <select id="statusFilter">
-      <option value="" id="statusAllOption">all statuses</option>
-      <option value="pledged" id="statusPledgedOption">announced / pledged</option>
-      <option value="in-transit" id="statusTransitOption">operational / in transit</option>
-      <option value="confirmed" id="statusConfirmedOption">confirmed delivered</option>
-    </select>
+  <div class="split-grid">
+    <div class="ledger-col">
+      <h2 class="col-heading" id="ledgerHeading">Relief Pledges</h2>
+      <div class="controls">
+        <input type="text" id="search" placeholder="search donor, recipient, note…">
+        <select id="typeFilter">
+          <option value="" id="typeAllOption">all types</option>
+        </select>
+        <select id="statusFilter">
+          <option value="" id="statusAllOption">all statuses</option>
+          <option value="pledged" id="statusPledgedOption">announced / pledged</option>
+          <option value="in-transit" id="statusTransitOption">operational / in transit</option>
+          <option value="confirmed" id="statusConfirmedOption">confirmed delivered</option>
+        </select>
+      </div>
+
+      <div id="ledger"><!-- filled by JS --></div>
+    </div>
+
+    <section class="rescue-col" id="rescueSection">
+      <h2 class="col-heading" id="rescueHeading">Thank You — International USAR &amp; Rescue Teams</h2>
+      <p class="rescue-intro" id="rescueIntro">On behalf of the people of Venezuela, this page extends its gratitude to the international search-and-rescue teams who deployed in the hours and days after the earthquakes.</p>
+      <div id="rescueList"><!-- filled by JS --></div>
+    </section>
   </div>
-
-  <div id="ledger"><!-- filled by JS --></div>
-
-  <section class="rescue-section" id="rescueSection">
-    <h2 id="rescueHeading">Thank You — International USAR &amp; Rescue Teams</h2>
-    <p class="rescue-intro" id="rescueIntro">On behalf of the people of Venezuela, this page extends its gratitude to the international search-and-rescue teams who deployed in the hours and days after the earthquakes.</p>
-    <div id="rescueList"><!-- filled by JS --></div>
-  </section>
 
   <footer>
     <h2 id="methodologyHeading">Methodology</h2>
@@ -441,6 +454,7 @@ const UI = {
     beforeGivingHeading: "Before giving directly",
     beforeGivingCopy: "Cross-check any organization against a charity evaluator such as BBB's Give.org, Charity Navigator, or GiveWell before donating, and be wary of unsolicited social-media or messaging-app requests — scam activity typically rises after major disasters.",
     updatedLine: n => `Ledger last reviewed: June 30, 2026 · ${n} entries · maintained manually, corrections welcome`,
+    ledgerHeading: "Relief Pledges",
     rescueHeading: "Thank You — International USAR & Rescue Teams",
     rescueIntro: "On behalf of the people of Venezuela, this page extends its gratitude to the international search-and-rescue teams who deployed in the hours and days after the earthquakes — often at real personal risk — to search for survivors in collapsed structures. Countries and teams are added below as deployments are confirmed.",
     rescueEmpty: "No confirmed deployments listed yet — check back as sourced entries are added."
@@ -473,6 +487,7 @@ const UI = {
     beforeGivingHeading: "Antes de donar directamente",
     beforeGivingCopy: "Verifique cualquier organización con un evaluador de caridad como BBB's Give.org, Charity Navigator o GiveWell antes de donar, y desconfíe de solicitudes no solicitadas por redes sociales o apps de mensajería — la actividad de estafas suele aumentar tras grandes desastres.",
     updatedLine: n => `Registro revisado por última vez: 30 de junio de 2026 · ${n} registros · mantenido manualmente, correcciones bienvenidas`,
+    ledgerHeading: "Promesas de Ayuda",
     rescueHeading: "Agradecimiento — Equipos Internacionales USAR y de Rescate",
     rescueIntro: "En nombre del pueblo venezolano, esta página extiende su agradecimiento a los equipos internacionales de búsqueda y rescate que se desplegaron en las horas y días posteriores a los terremotos — muchas veces asumiendo riesgos personales reales — para buscar sobrevivientes entre estructuras colapsadas. Los países y equipos se agregan a continuación a medida que se confirman sus despliegues.",
     rescueEmpty: "Aún no hay despliegues confirmados en la lista — vuelva pronto a medida que se agreguen registros con fuente."
@@ -571,6 +586,7 @@ function applyStaticStrings(){
   document.getElementById('beforeGivingHeading').textContent = s.beforeGivingHeading;
   document.getElementById('beforeGivingCopy').textContent = s.beforeGivingCopy;
   document.getElementById('updatedLine').textContent = s.updatedLine(data.length);
+  document.getElementById('ledgerHeading').textContent = s.ledgerHeading;
   document.getElementById('rescueHeading').textContent = s.rescueHeading;
   document.getElementById('rescueIntro').textContent = s.rescueIntro;
   document.getElementById('btnLangEs').classList.toggle('active', lang==='es');
