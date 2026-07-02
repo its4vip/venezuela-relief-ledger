@@ -379,6 +379,30 @@ const data = [
     sourceName: "Protección Civil - Spain (@proteccioncivil on X)",
     url: "https://x.com/proteccioncivil/status/2072366689203954035?s=20",
     note: "Spain's Protección Civil confirmed a cargo plane departed Torrejón Air Base at midday bound for Venezuela, carrying 1,800 rest/hygiene kits (prepared by the Spanish Red Cross, each covering basic needs for 5 people over 2 days: inflatable beds, acrylic blankets, toiletry kits, manual inflation pump) and an EMT-1 first-response field hospital provided by AECID, Spain's international development agency. Coordinated with the EU's Civil Protection and Humanitarian Aid Operations (ECHO)."
+  },
+  {
+    donor: "Israel — Humanitarian Coalition (ZAKA, CADENA International, NATAN Worldwide, IsraAID)",
+    type: "NGO",
+    amountUSD: null,
+    amountDisplay: "In-kind: mobile medical clinics, mental health support, WASH, emergency supplies (no dollar total disclosed)",
+    date: "2026-07-01",
+    status: "in-transit",
+    recipient: "Affected communities and families in Venezuela — specific locations not given in source",
+    sourceName: "Yosef Garmon (@RabinoGarmon on X)",
+    note: "A coordinated Israeli humanitarian effort described by an individual (Rabbi Yosef Garmon), not each organization's own statement: the Humanitarian Coalition (with ZAKA and Yovel BaWeb) is distributing aid and providing logistical/family support; CADENA International is assessing needs and coordinating emergency aid delivery; NATAN Worldwide Disaster Relief is running mobile medical clinics and providing emergency care and psychosocial support; IsraAID is providing psychological first aid, mental health support, and WASH assistance. No dollar total, headcounts, or specific locations were given. A separate Israeli government/search-and-rescue delegation described in the same post is tracked in the rescue-teams section above.",
+    url: "https://x.com/RabinoGarmon/status/2072476149486133394?s=20"
+  },
+  {
+    donor: "Juan Andrés Mejía donation campaign (matched by IDB)",
+    type: "Individual",
+    amountUSD: 100000,
+    amountDisplay: "$100K ($50K raised + $50K IDB match)",
+    date: "2026-07-01",
+    status: "pledged",
+    recipient: "Not specified — general earthquake relief campaign",
+    sourceName: "Juan Andrés Mejía (@JuanAndresMejia on X)",
+    url: "https://x.com/JuanAndresMejia/status/2072444337359651275?s=20",
+    note: "Venezuelan opposition deputy Juan Andrés Mejía announced a public donation campaign reached its first US$50,000 milestone, triggering a matching US$50,000 commitment from the Inter-American Development Bank (IDB, @el_bid) for a combined US$100,000. Campaign remains open; no specific recipient organization, disbursement timeline, or confirmation of funds reaching affected people was given."
   }
 ];
 
@@ -446,6 +470,18 @@ const esTranslations = {
     recipient: "No especificado más allá de Venezuela — encaminado en coordinación con la Protección Civil y Ayuda Humanitaria de la UE (ECHO)",
     amountDisplay: "En especie: 1.800 kits de descanso e higiene + hospital de campaña EMT-1",
     note: "La Protección Civil de España confirmó que un avión de carga despegó a mediodía desde la Base Aérea de Torrejón con destino a Venezuela, transportando 1.800 kits de descanso e higiene (preparados por la Cruz Roja Española, cada uno pensado para cubrir las necesidades básicas de 5 personas durante 2 días: camas inflables, mantas acrílicas, neceseres de aseo, bomba de inflado manual) y un hospital de campaña de primera respuesta EMT-1 proporcionado por la AECID, la agencia española de cooperación internacional. Coordinado con la Protección Civil y Ayuda Humanitaria de la Unión Europea (ECHO)."
+  },
+  "Israel — Humanitarian Coalition (ZAKA, CADENA International, NATAN Worldwide, IsraAID)": {
+    donor: "Israel — Coalición Humanitaria (ZAKA, CADENA International, NATAN Worldwide, IsraAID)",
+    amountDisplay: "En especie: clínicas médicas móviles, apoyo en salud mental, agua/saneamiento (WASH), suministros de emergencia (sin monto en dólares revelado)",
+    recipient: "Comunidades y familias afectadas en Venezuela — sin ubicaciones específicas en la fuente",
+    note: "Un esfuerzo humanitario israelí coordinado, descrito por un particular (el rabino Yosef Garmon), no por el comunicado oficial de cada organización: la Coalición Humanitaria (con ZAKA y Yovel BaWeb) distribuye ayuda y brinda apoyo logístico y familiar; CADENA International evalúa necesidades y coordina la entrega de ayuda de emergencia; NATAN Worldwide Disaster Relief opera clínicas médicas móviles y brinda atención de emergencia y apoyo psicosocial; IsraAID brinda primeros auxilios psicológicos, apoyo en salud mental, y asistencia en agua/saneamiento (WASH). No se dieron montos, cantidad de personas atendidas, ni ubicaciones específicas. Una delegación aparte del Gobierno de Israel y de búsqueda y rescate, descrita en la misma publicación, se rastrea en la sección de equipos de rescate más arriba."
+  },
+  "Juan Andrés Mejía donation campaign (matched by IDB)": {
+    donor: "Campaña de donación de Juan Andrés Mejía (con contrapartida del BID)",
+    amountDisplay: "$100 mil ($50 mil recaudados + $50 mil de contrapartida del BID)",
+    recipient: "No especificado — campaña general de ayuda tras el terremoto",
+    note: "El diputado opositor venezolano Juan Andrés Mejía anunció que una campaña pública de donaciones alcanzó su primera meta de US$50.000, lo que activó un compromiso de contrapartida de US$50.000 del Banco Interamericano de Desarrollo (BID, @el_bid) para un total combinado de US$100.000. La campaña sigue abierta; no se indicó una organización receptora específica, cronograma de desembolso, ni confirmación de que los fondos hayan llegado a las personas afectadas."
   }
 };
 
@@ -528,11 +564,11 @@ const rescueTeams = [
   // the summary must say which, never assume confirmed on-the-ground presence from an offer alone.
   {
     country: "El Salvador",
-    team: "Government of El Salvador — rescue & paramedic corps",
-    date: "2026-06-24",
-    summary: "President Nayib Bukele announced same-day that El Salvador's Foreign Ministry had offered assistance to Venezuela's government: 300 rescuers and paramedics plus 50 tons of equipment, medicine, and basic supplies \"ready to depart for Caracas.\" This post confirms the offer and readiness to deploy on June 24 — it does not by itself confirm the team's on-the-ground arrival or rescue operations in Venezuela.",
-    sourceName: "President Nayib Bukele (@nayibbukele on X)",
-    url: "https://x.com/nayibbukele/status/2069958907045249176?s=20"
+    team: "USAR El Salvador (Government of El Salvador rescue & paramedic corps)",
+    date: "2026-07-01",
+    summary: "El Salvador's government offered 300 rescuers and paramedics plus 50 tons of equipment on June 24, the day of the quake (announced by President Bukele, \"ready to depart for Caracas\"). As of July 1, El Salvador's Presidential Press Secretariat confirmed USAR El Salvador is actively searching the Miramar building in the Palmar Este area of Caraballeda, La Guaira state, for an eight-year-old, Lucas Gámez — confirming the team's on-the-ground search-and-rescue operations, not just the initial offer.",
+    sourceName: "El Salvador Presidential Press Secretariat (@SecPrensaSV on X)",
+    url: "https://x.com/SecPrensaSV/status/2072399793645601009?s=20"
   },
   {
     country: "Mexico",
@@ -541,17 +577,54 @@ const rescueTeams = [
     summary: "Topos México confirmed arrival in Venezuela with a short post — \"¡Llegamos a Venezuela!\" (\"We've arrived in Venezuela!\") — crediting @romeromex for accompanying photography. This confirms the team's on-the-ground arrival; the post doesn't specify a landing city, deployment location, or details of rescue operations performed since arriving.",
     sourceName: "Topos México (@topos on X)",
     url: "https://x.com/topos/status/2070921707242520807?s=20"
+  },
+  {
+    country: "Czech Republic",
+    team: "Czech Fire Rescue Service (HZS ČR) — heavy USAR team",
+    date: "2026-07-01",
+    summary: "The Czech Fire Rescue Service's heavy USAR team — firefighters, dog handlers, structural engineers, and a team physician — is working the Playa Grande and Sector B areas of Venezuela, searching structurally unstable buildings for survivors using trained rescue dogs and seismic geophones. The team has also recovered the remains of several victims from the rubble, and its physician has provided medical and psychological support to grieving family members on-site.",
+    sourceName: "Hasičský záchranný sbor ČR (hasici.cz)",
+    url: "https://www.hasici.cz/zhave-aktuality/Ze-sveta-aktuality/Cesti-zachranari-ve-Venezuele-prinaseji-nadeji-i-d"
+  },
+  {
+    country: "Argentina",
+    team: "Policía Federal Argentina — USAR Brigade",
+    date: "2026-07-01",
+    summary: "Argentina's Federal Police confirmed its USAR Brigade continues search-and-rescue operations in Venezuela alongside international teams. The post doesn't specify a location, arrival date, or headcount.",
+    sourceName: "Policía Federal Argentina (@PFAOficial on X)",
+    url: "https://x.com/PFAOficial/status/2072307004727558185?s=20"
+  },
+  {
+    country: "Israel",
+    team: "Israel Government Delegation + Search & Rescue Teams (IDF, Ready for Rescue, Magen, SmartAID)",
+    date: "2026-07-01",
+    summary: "A coordinated Israeli delegation is described as active in Venezuela: the Israeli government (Foreign Ministry, IDF, and Home Front Command) is assessing damaged structures, advising on search and rescue, and coordinating with local authorities; a separate search-and-rescue delegation (Ready for Rescue, Magen – Disaster & Emergency Management, and SmartAID) is searching for survivors, assessing damage, and distributing emergency supplies. Source is a summary post by an individual (Rabbi Yosef Garmon) describing multiple coordinated Israeli efforts, not each organization's own official statement — specific locations, arrival dates, and headcounts weren't given.",
+    sourceName: "Yosef Garmon (@RabinoGarmon on X)",
+    url: "https://x.com/RabinoGarmon/status/2072476149486133394?s=20"
   }
 ];
 
 const esRescueTranslations = {
-  "Government of El Salvador — rescue & paramedic corps": {
-    team: "Gobierno de El Salvador — cuerpo de rescate y paramédicos",
-    summary: "El presidente Nayib Bukele anunció ese mismo día que la Cancillería de El Salvador había ofrecido ayuda al Gobierno de Venezuela: 300 rescatistas y paramédicos junto con 50 toneladas de equipo, medicamentos e insumos de primera necesidad \"listos para partir hacia Caracas\". Esta publicación confirma la oferta y disposición para desplegarse el 24 de junio — por sí sola no confirma la llegada del equipo al terreno ni operaciones de rescate en Venezuela."
+  "USAR El Salvador (Government of El Salvador rescue & paramedic corps)": {
+    team: "USAR El Salvador (cuerpo de rescate y paramédicos del Gobierno de El Salvador)",
+    summary: "El Gobierno de El Salvador ofreció 300 rescatistas y paramédicos junto con 50 toneladas de equipo el 24 de junio, el día del sismo (anunciado por el presidente Bukele, \"listos para partir hacia Caracas\"). Al 1 de julio, la Secretaría de Prensa de la Presidencia de El Salvador confirmó que USAR El Salvador busca activamente en el edificio Miramar, en la urbanización Palmar Este de Caraballeda, estado La Guaira, a Lucas Gámez, de ocho años — confirmando las operaciones del equipo sobre el terreno, más allá de la oferta inicial."
   },
   "Topos México": {
     country: "México",
     summary: "Topos México confirmó su llegada a Venezuela con una publicación breve — \"¡Llegamos a Venezuela!\" — con crédito a @romeromex por la fotografía. Esto confirma la llegada del equipo al terreno; la publicación no especifica ciudad de llegada, lugar de despliegue, ni detalles de las operaciones de rescate realizadas desde su llegada."
+  },
+  "Czech Fire Rescue Service (HZS ČR) — heavy USAR team": {
+    country: "República Checa",
+    team: "Cuerpo de Bomberos de la República Checa (HZS ČR) — equipo pesado USAR",
+    summary: "El equipo pesado USAR del Cuerpo de Bomberos de la República Checa (HZS ČR) — bomberos, guías caninos, especialistas en estructuras y una médica del equipo — trabaja en las zonas de Playa Grande y Sector B en Venezuela, revisando edificios estructuralmente inestables en busca de sobrevivientes con perros de rescate entrenados y geófonos sísmicos. El equipo también ha recuperado los restos de varias víctimas entre los escombros, y su médica ha brindado apoyo médico y psicológico a familiares en duelo en el lugar."
+  },
+  "Policía Federal Argentina — USAR Brigade": {
+    team: "Policía Federal Argentina — Brigada USAR",
+    summary: "La Policía Federal Argentina confirmó que su Brigada USAR continúa operaciones de búsqueda y rescate en Venezuela junto a equipos internacionales. La publicación no especifica un lugar, fecha de llegada, ni cantidad de brigadistas."
+  },
+  "Israel Government Delegation + Search & Rescue Teams (IDF, Ready for Rescue, Magen, SmartAID)": {
+    team: "Delegación del Gobierno de Israel + equipos de búsqueda y rescate (FDI, Ready for Rescue, Magen, SmartAID)",
+    summary: "Una delegación israelí coordinada se describe como activa en Venezuela: el Gobierno de Israel (Cancillería, Fuerzas de Defensa de Israel y Comando del Frente Interno) evalúa estructuras dañadas, asesora en búsqueda y rescate, y coordina con las autoridades locales; una delegación aparte de búsqueda y rescate (Ready for Rescue, Magen – Disaster & Emergency Management, y SmartAID) busca sobrevivientes, evalúa daños y distribuye suministros de emergencia. La fuente es una publicación resumen de un particular (el rabino Yosef Garmon) que describe varios esfuerzos israelíes coordinados, no el comunicado oficial de cada organización — no se dieron ubicaciones específicas, fechas de llegada, ni cantidad de personal."
   }
 };
 
