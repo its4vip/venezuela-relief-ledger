@@ -154,6 +154,18 @@
   footer p{max-width:64ch;margin:0 0 12px;}
   .updated{font-family:var(--mono);font-size:11px;color:var(--ink-dim);margin-top:24px;}
 
+  /* ---------- Archive notice ---------- */
+  .archive-notice{
+    background:var(--surface-2);border:1px solid var(--line);border-left:3px solid var(--ink-dim);
+    border-radius:2px;padding:14px 16px;margin:20px 0;
+  }
+  .archive-label{
+    font-family:var(--mono);font-size:11px;letter-spacing:.08em;color:var(--ink-dim);
+    text-transform:uppercase;margin-bottom:6px;
+  }
+  .archive-notice p{margin:0;font-size:13.5px;color:var(--ink);}
+  .archive-notice a{text-decoration:underline;text-decoration-color:var(--line);}
+
   @media (prefers-reduced-motion: reduce){ *{transition:none !important;} }
 </style>
 </head>
@@ -183,6 +195,11 @@
         fill="none" stroke="#B5493D" stroke-width="1.5"/>
     </svg>
   </header>
+
+  <div class="archive-notice" id="archiveNotice">
+    <div class="archive-label" id="archiveLabel">Archived — see Ruta de la Ayuda</div>
+    <p id="archiveCopy">This ledger is no longer actively maintained. <a href="https://rutadeayuda.org" target="_blank" rel="noopener">Ruta de la Ayuda</a>, a project by Transparencia Venezuela, now tracks this relief effort at NGO scale — donor map, open data, API access, and public sourcing methodology. The entries below remain as a manually-sourced snapshot from the first days after the earthquake.</p>
+  </div>
 
   <div class="stats" id="stats"><!-- filled by JS --></div>
 
@@ -520,7 +537,9 @@ const UI = {
     ledgerHeading: "Relief Pledges",
     rescueHeading: "Thank You — International USAR & Rescue Teams",
     rescueIntro: "On behalf of the people of Venezuela, this page extends its gratitude to the international search-and-rescue teams who deployed in the hours and days after the earthquakes — often at real personal risk — to search for survivors in collapsed structures. Countries and teams are added below as deployments are confirmed.",
-    rescueEmpty: "No confirmed deployments listed yet — check back as sourced entries are added."
+    rescueEmpty: "No confirmed deployments listed yet — check back as sourced entries are added.",
+    archiveLabel: "Archived — see Ruta de la Ayuda",
+    archiveCopy: "This ledger is no longer actively maintained. <a href=\"https://rutadeayuda.org\" target=\"_blank\" rel=\"noopener\">Ruta de la Ayuda</a>, a project by Transparencia Venezuela, now tracks this relief effort at NGO scale — donor map, open data (JSON/CSV/GeoJSON), API access, and public sourcing methodology. The entries below remain as a manually-sourced snapshot from the first days after the earthquake."
   },
   es: {
     htmlLang: "es-VE",
@@ -553,7 +572,9 @@ const UI = {
     ledgerHeading: "Promesas de Ayuda",
     rescueHeading: "Agradecimiento — Equipos Internacionales USAR y de Rescate",
     rescueIntro: "En nombre del pueblo venezolano, esta página extiende su agradecimiento a los equipos internacionales de búsqueda y rescate que se desplegaron en las horas y días posteriores a los terremotos — muchas veces asumiendo riesgos personales reales — para buscar sobrevivientes entre estructuras colapsadas. Los países y equipos se agregan a continuación a medida que se confirman sus despliegues.",
-    rescueEmpty: "Aún no hay despliegues confirmados en la lista — vuelva pronto a medida que se agreguen registros con fuente."
+    rescueEmpty: "Aún no hay despliegues confirmados en la lista — vuelva pronto a medida que se agreguen registros con fuente.",
+    archiveLabel: "Archivado — ver Ruta de la Ayuda",
+    archiveCopy: "Este registro ya no se mantiene activamente. <a href=\"https://rutadeayuda.org\" target=\"_blank\" rel=\"noopener\">Ruta de la Ayuda</a>, un proyecto de Transparencia Venezuela, ahora rastrea este esfuerzo de ayuda a escala de ONG — mapa de donantes, datos abiertos (JSON/CSV/GeoJSON), acceso por API y metodología pública de fuentes. Los registros a continuación permanecen como una instantánea con fuente manual de los primeros días tras el terremoto."
   }
 };
 
@@ -714,6 +735,8 @@ function applyStaticStrings(){
   document.getElementById('ledgerHeading').textContent = s.ledgerHeading;
   document.getElementById('rescueHeading').textContent = s.rescueHeading;
   document.getElementById('rescueIntro').textContent = s.rescueIntro;
+  document.getElementById('archiveLabel').textContent = s.archiveLabel;
+  document.getElementById('archiveCopy').innerHTML = s.archiveCopy;
   document.getElementById('btnLangEs').classList.toggle('active', lang==='es');
   document.getElementById('btnLangEn').classList.toggle('active', lang==='en');
 }

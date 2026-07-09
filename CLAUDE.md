@@ -1,5 +1,15 @@
 # Relief Pledge Registry — Venezuela Earthquake Relief Ledger · Claude Code Session
 
+## Status: ARCHIVED (2026-07-09)
+Transparencia Venezuela (an established anti-corruption watchdog NGO) launched
+**Ruta de la Ayuda** (https://rutadeayuda.org) — a professionally maintained tracker
+covering the same relief effort at NGO scale: donor map, open data (JSON/CSV/GeoJSON),
+API access, and confidence-rated public sourcing. This project is discontinued in its
+favor. `venezuela-relief-ledger.html` now carries a bilingual archive notice pointing
+readers there; the existing 9 entries are kept in place as a historical snapshot, not
+deleted. Do not resume the "What to work on" priorities below (data refresh, status
+promotion, hosting, etc.) unless the user explicitly reopens the project.
+
 ## Project context
 Single-file HTML tracker for public accountability of Venezuela earthquake relief
 pledges (June 24, 2026 doublet quake, M7.2 → M7.5, west of Caracas).
